@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react'
+import React, { useState, useEffect} from 'react'
 import Games from '../data/Games';
 import { ActivityIndicator, StyleSheet, Text, View, ScrollView, Image } from 'react-native'
 import LeaderBoardEntry from './LeadeBoardEntry';
@@ -20,10 +20,6 @@ function DataTab(props) {
 
     }
 
-    function arePropsEqual(prevProps, nextProps) {
-        console.log ('hello');
-        return prevProps.label === nextProps.label; 
-      }
 
     function doStuff(param) {
         setTimeout(() => {
@@ -96,14 +92,25 @@ function DataTab(props) {
         return (
             <View style={styles(props).mainContainer}>
                 {props.user && props.data.country !== 'undefined' && props.data.country !== null && <Image resizeMode='stretch' style={styles(Global).flag} source={{ uri: `https://www.countryflags.io/${props.data.country}/flat/64.png` }} />}
-                <ScrollView keyboardShouldPersistTaps='always' showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles(props).scrollContainer}>
+                <ScrollView keyboardShouldPersistTaps='always'  directionalLockEnabled={true} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles(props).scrollContainer}>
                     {runs}
                 </ScrollView>
             </View>
         )
     }
 
-}
+};
+
+
+function arePropsEqual(prevProps, nextProps) {
+    if (!prevProps.user)
+    {
+        return prevProps === nextProps;
+    }
+
+    if (prevProps.user && nextProps.user)
+        return true;
+  }
 
 
 const styles = (param) => StyleSheet.create
@@ -111,7 +118,7 @@ const styles = (param) => StyleSheet.create
         flag:
         {
             position: 'absolute',
-            top: '-12.2%',
+            top: -51,
             left: '13%',
             width: 58,
             height: 58,
@@ -189,4 +196,4 @@ const styles = (param) => StyleSheet.create
     })
 
 
-export default memo(DataTab);
+export default React.memo(DataTab, arePropsEqual);

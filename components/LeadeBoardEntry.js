@@ -19,9 +19,6 @@ class LeaderBoardEntry extends React.Component {
         } 
     }
 
-    componentDidUpdate() {
-        console.log('leaderboard updated');
-    }
 
     createLeaderBoard() {
         leaderBoard = [];
@@ -132,12 +129,12 @@ styles = StyleSheet.create({
     userText:
     {
         width: '47%',
-        backgroundColor: '#140',
+        backgroundColor: '#422',
         marginRight: 6,
         fontWeight: 'bold',
-        borderRadius: 20,
+        borderRadius: 5,
         borderColor: '#000',
-        borderWidth: 1,
+        borderWidth: 1.25,
         textAlign: 'center',
         textAlignVertical: 'center',
         height: 30

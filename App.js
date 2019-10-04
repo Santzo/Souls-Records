@@ -27,11 +27,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-
-
-
-
-
 class App extends React.Component {
   constructor() {
     super()
@@ -143,7 +138,7 @@ class App extends React.Component {
         {this.state.dataLoaded && <Arrow ref={this.scrollRef} length={this.state.tabLength} />}
         {this.state.userLoading && <View style={styles().loadingCircle}><ActivityIndicator size={80} color="#dd4411" /></View>}
         <ScrollView ref={this.horizontal} onScroll={this.handleScroll} contentContainerStyle={styles(this.state.tabLength).horizontalScroll} horizontal={true} pagingEnabled={true}
-          showsHorizontalScrollIndicator={false} decelerationRate='fast' disableIntervalMomentum={true} bounces={false}>
+          showsHorizontalScrollIndicator={false} directionalLockEnabled={true} disableIntervalMomentum={true} bounces={false}>
           <View style={styles().inner}>
             <View style={[styles().outer, {zIndex: 0}]}>
               {gameTitles}
