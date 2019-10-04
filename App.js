@@ -25,10 +25,8 @@ import {
   ScrollView,
   Alert,
   ActivityIndicator,
-  ImageBackground
-
 } from 'react-native';
-import { thisExpression } from '@babel/types';
+
 
 
 
@@ -88,9 +86,9 @@ class App extends React.Component {
         this.setState(prevState => { userData: prevState.userData.push(response) });
       }
       else {
-        const tempState = this.state.userData
+        let tempState = [...this.state.userData];
         tempState[2] = response;
-        this.setState({ userData: tempState });
+        this.setState(prevState => { userData: prevState.userData = tempState });
       }
 
       this.setState({ tabLength: this.state.data.length + this.state.userData.length, userLoading: false })
@@ -133,7 +131,7 @@ class App extends React.Component {
 
     if (this.state.userData.length > 0) {
       for (let [index, value] of this.state.userData.entries()) {
-        gameTitles.push(<Text key={index + this.state.data.length} style={styles(this.state.tabLength).titleText}>{value.runner}</Text>)
+        gameTitles.push(<View key={index + this.state.data.length} style={[styles(this.state.tabLength).titleText, {height:44}]}><Text style={[styles(this.state.tabLength).userTitleText, {fontSize: value.runner.length < 12 ? 30 : 42 - value.runner.length}]}>{value.runner}</Text></View>)
         games.push(<DataTab user={true} key={index + this.state.data.length} style={styles(this.state.tabLength).games} index={index} data={value} />)
       }
     }
@@ -163,7 +161,7 @@ class App extends React.Component {
 
 }
 
-const styles = (ori, param) => StyleSheet.create({
+const styles = (ori) => StyleSheet.create({
 
   inner: {
     width: '100%',
@@ -200,8 +198,19 @@ const styles = (ori, param) => StyleSheet.create({
     backgroundColor: '#111',
     alignSelf: 'flex-start',
     textAlign: 'center',
+    justifyContent: 'center',
     textAlignVertical: 'center',
   },
+
+  userTitleText:{
+    color: '#fff',
+    marginLeft:'31%',
+    fontFamily: 'squada',
+    alignSelf: 'flex-start',
+    textAlign: 'left',
+    textAlignVertical: 'center',
+  },
+
   games: {
     width: `${100 / ori}%`,
   },

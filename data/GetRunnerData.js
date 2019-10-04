@@ -11,7 +11,8 @@ async function GetRunnerData(name) {
 
     if (typeof data.data === 'undefined' || data.data === null) return null;
 
-    let tempCountry = data.data[0].players.data[0].location.country.code
+    let tempLocation = data.data[0].players.data[0].location;
+    let tempCountry = Check(tempLocation) ? data.data[0].players.data[0].location.country.code : null;
     UserData.country = Check(tempCountry) ? tempCountry : '';
     
     const games = data.data.filter(dat => {

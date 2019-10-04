@@ -71,4 +71,3 @@ async function GetLeaderboards(game, category) {
     return data;
 }
 export default RunData;
-//module.exports = RunData.Games;

@@ -27,7 +27,7 @@ const styles = (param) => StyleSheet.create
                 borderRadius: 12,
                 borderTopWidth: (param.id == 0) ? 2 : 1,
                 position: "absolute",
-                top: `${19.5 + param.id * 7.5}%`
+                top: `${19.5 + param.id * 7.7}%`
             },
 
             text: {

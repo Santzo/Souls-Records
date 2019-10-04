@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, memo } from 'react'
 import Games from '../data/Games';
 import { ActivityIndicator, StyleSheet, Text, View, ScrollView, Image } from 'react-native'
-import { RFValue } from 'react-native-responsive-fontsize'
 import LeaderBoardEntry from './LeadeBoardEntry';
 import ExpandButton from './ExpandButton';
 import Global from '../global'
@@ -21,13 +20,17 @@ function DataTab(props) {
 
     }
 
+    function arePropsEqual(prevProps, nextProps) {
+        console.log ('hello');
+        return prevProps.label === nextProps.label; 
+      }
 
     function doStuff(param) {
         setTimeout(() => {
             const temp = [...aruns];
             const tempText = [...eText];
             temp[param] = aruns[param] == 3 ? props.data.categories[param].leaderboard.length : 3;
-            tempText[param] = eText[param] === 'Expand' ? 'Compress' : 'Expand';
+            tempText[param] = eText[param] === 'Expand' ? 'Collapse' : 'Expand';
             setaRuns(temp);
             seteText(tempText);
             setLoading(false);
@@ -38,6 +41,7 @@ function DataTab(props) {
         setaRuns(showRuns);
         seteText(showRuns.map(a => { return 'Expand' }));
     }
+
 
     // Datatab for each game
 
@@ -57,11 +61,10 @@ function DataTab(props) {
         return (
 
             <View style={styles(props).mainContainer}>
-               
+
                 {loading && <View style={styles(props).loadingCircle}><ActivityIndicator size={60} color="#9f8" /></View>}
                 {!props.data.isLoaded && <View style={styles(props).mainCircle}><ActivityIndicator size={80} color="#abf" /></View>}
                 <ScrollView keyboardShouldPersistTaps='always' showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles(props).scrollContainer}>
-
                     {runs}
                 </ScrollView>
             </View>
@@ -70,34 +73,34 @@ function DataTab(props) {
 
     // Datatab for users
     else {
-        console.log (props.user + " " + props.data.country);
-        const runs = Games.map((game, index) => {
+        let runs = Games.map((game, index) => {
             const runsOfTheGame = [];
             for (runnerGame of props.data.games) {
                 if (game.name === runnerGame.name) {
-                    runsOfTheGame.push(<LeaderBoardEntry key={runnerGame.name + runnerGame.category} user={props.user} index={index} data={runnerGame} />)
+                    console.log (runnerGame.time + " " + runnerGame.date)
+                    runsOfTheGame.push(<LeaderBoardEntry runner={props.data.runner} key={runnerGame.name + runnerGame.category} user={props.user} index={index} data={runnerGame} />)
                 }
             }
             return (
                 runsOfTheGame.length > 0 ?
-                <View key={index} style={styles(props).scrollContainer}>
-                    <View style={styles(props).categoryContainer}>
-                        <Text style={styles(game.name).categoryText}>{game.name}</Text>
+                    <View key={index} style={styles(props).scrollContainer}>
+                        <View style={styles(props).categoryContainer}>
+                            <Text style={[styles(game.name).categoryText, {paddingBottom:1.75}]}>{game.name}</Text>
+                        </View>
+                        {runsOfTheGame}
                     </View>
-                {runsOfTheGame}
-                </View>
-                : []
+                    : []
             );
         }
-);
-return (
-    <View style={styles(props).mainContainer}>
-         {props.user && props.data.country !== 'undefined' && props.data.country !== null && <Image resizeMode='stretch' style={styles(Global).flag} source={{ uri: `https://www.countryflags.io/${props.data.country}/flat/64.png` }} />}
-        <ScrollView keyboardShouldPersistTaps='always' showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles(props).scrollContainer}>
-            {runs}
-        </ScrollView>
-    </View>
-)
+        );
+        return (
+            <View style={styles(props).mainContainer}>
+                {props.user && props.data.country !== 'undefined' && props.data.country !== null && <Image resizeMode='stretch' style={styles(Global).flag} source={{ uri: `https://www.countryflags.io/${props.data.country}/flat/64.png` }} />}
+                <ScrollView keyboardShouldPersistTaps='always' showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles(props).scrollContainer}>
+                    {runs}
+                </ScrollView>
+            </View>
+        )
     }
 
 }
@@ -107,13 +110,12 @@ const styles = (param) => StyleSheet.create
     ({
         flag:
         {
-            position:'absolute',
-            top: '-13.6%',
-            left: '-2.5%',
-            width: '105%',
-            height: '16.5%',
-            zIndex:200,
-            opacity:0.4
+            position: 'absolute',
+            top: '-12.2%',
+            left: '13%',
+            width: 58,
+            height: 58,
+            zIndex: 200
         },
         mainContainer: {
             width: '100%',
@@ -125,7 +127,7 @@ const styles = (param) => StyleSheet.create
 
         scrollContainer: {
             width: '99.5%',
-            alignItems:'center'
+            alignItems: 'center'
         },
 
         categoryContainer: {
@@ -177,7 +179,7 @@ const styles = (param) => StyleSheet.create
         mainCircle:
         {
             position: 'absolute',
-            top: !param.isLoaded ? '50%' : '20%',
+            top: !param.isLoaded ? '40%' : '20%',
             bottom: 0,
             left: 0,
             right: 0,
@@ -187,4 +189,4 @@ const styles = (param) => StyleSheet.create
     })
 
 
-export default DataTab;
+export default memo(DataTab);

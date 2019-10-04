@@ -1,7 +1,5 @@
 import React, { useState, setState } from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity, Linking, Alert } from 'react-native';
-import { RFValue } from 'react-native-responsive-fontsize';
-import { tsImportEqualsDeclaration } from '@babel/types';
 const Time = require('../data/TimeCalculator');
 
 
@@ -13,7 +11,16 @@ class LeaderBoardEntry extends React.Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        return nextProps.amountToShow != this.props.amountToShow;
+        if (!this.props.user) {
+            return nextProps.amountToShow != this.props.amountToShow;
+        }
+        else{
+            return nextProps.runner != this.props.runner;
+        } 
+    }
+
+    componentDidUpdate() {
+        console.log('leaderboard updated');
     }
 
     createLeaderBoard() {
@@ -39,7 +46,7 @@ class LeaderBoardEntry extends React.Component {
     }
 
     createRunnerEntry() {
-        const { date, category, place, time, video, country } = this.props.data;
+        const { date, category, place, time, video } = this.props.data;
         let bold = false;
         let howLong = Time.DateComparison(date);
         if (typeof howLong === 'number') {
@@ -56,7 +63,7 @@ class LeaderBoardEntry extends React.Component {
     }
 
     ListUpdate = (link) => () => {
-        console.log (link);
+        console.log(link);
         // if (link !== '') Linking.openURL(link);
         // else Alert.alert('No video', 'No video found for this entry :(');    
     }
@@ -71,7 +78,7 @@ class LeaderBoardEntry extends React.Component {
         }
         return (
             <View style={styles.mainContainer}>
-              
+
                 {leaderBoard}
             </View>
         )
@@ -124,15 +131,16 @@ styles = StyleSheet.create({
     },
     userText:
     {
-        width:'47.5%', 
-        backgroundColor:'#1e1e1e',
-        color:'#bbb', 
-        marginRight:6, 
-        fontWeight:'bold', 
-        borderRadius:20,
-        borderColor:'#000',
-        borderWidth:1,
-        textAlign: 'center'
+        width: '47%',
+        backgroundColor: '#140',
+        marginRight: 6,
+        fontWeight: 'bold',
+        borderRadius: 20,
+        borderColor: '#000',
+        borderWidth: 1,
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        height: 30
     },
     timeText:
     {
