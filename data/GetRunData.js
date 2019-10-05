@@ -19,6 +19,8 @@ async function GetRunData(game) {
 
     const categoryData = await GetCategories(game);
 
+    if (typeof categoryData === 'undefined' || categoryData === null) {game.error = true; return;}
+
     for (let i = 0; i < categoryData.data.length; i++) {
         game.categories[i] = ({ name: categoryData.data[i].name, id: categoryData.data[i].id, leaderboard: [{ runner: '', runnerId: '', country: '', time: '', date: '', videoLink: '' }] });
     }
@@ -56,8 +58,8 @@ async function GetRunData(game) {
 
 async function GetCategories(game) {
 
-    const response = await fetch(`https://www.speedrun.com/api/v1/games/${game.id}/categories`).catch(err => console.log(err));
-    const data = await response.json().catch(err => console.log(err));
+    const response = await fetch(`https://www.speedrun.com/api/v1/games/${game.id}/categories`);
+    const data = typeof response !== 'undefined' && response !== null ? response.json() : null;
     return data;
 
 
@@ -65,10 +67,8 @@ async function GetCategories(game) {
 
 async function GetLeaderboards(game, category) {
 
-    const response = await fetch(`https://www.speedrun.com/api/v1/leaderboards/${game.id}/category/${category.id}?embed=players`).catch(err => console.log(err));
-    const data = await response.json().catch(err => console.log(err));
-
-
+    const response = await fetch(`https://www.speedrun.com/api/v1/leaderboards/${game.id}/category/${category.id}?embed=players`);
+    const data = typeof response !== 'undefined' && response !== null ? response.json() : null;
     return data;
 }
 export default RunData;

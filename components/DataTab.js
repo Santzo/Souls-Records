@@ -43,6 +43,7 @@ function DataTab(props) {
     // Datatab for each game
 
     if (!props.user) {
+            if (props.data.error) console.log (props.data.game + " error!");
         const runs = props.data.isLoaded ? props.data.categories.map((cat, index) => {
             return (
                 <View key={index} style={styles(props).scrollContainer}>
