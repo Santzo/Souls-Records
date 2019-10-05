@@ -1,12 +1,11 @@
-import React, {useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import Global from '../global';
-import { RFValue } from 'react-native-responsive-fontsize';
+import React, { useState } from 'react';
+import {Text, StyleSheet, TouchableOpacity } from 'react-native';
+
 
 function UserSearch(props) {
     const [color, setColor] = useState('#000022ee')
     return (
-        <TouchableOpacity activeOpacity={1} onPressIn={() => setColor('#661100ef')} onPressOut={() => setColor('#000022ee')} onPress={props.func(props.name)} style={[styles(props).button,{backgroundColor:color}]}>
+        <TouchableOpacity activeOpacity={1} onPressIn={() => setColor('#661100ef')} onPressOut={() => setColor('#000022ee')} onPress={props.func(props.name)} style={[styles(props).button, { backgroundColor: color }]}>
             <Text style={styles(props).text}>{props.name}</Text>
         </TouchableOpacity>
 
@@ -16,9 +15,9 @@ function UserSearch(props) {
 const styles = (param) => StyleSheet.create
     (
         {
-            button:{
+            button: {
                 width: '90%',
-                alignSelf:'center',
+                alignSelf: 'center',
                 borderWidth: 1.5,
                 borderColor: '#555',
                 paddingBottom: 12,
@@ -33,7 +32,7 @@ const styles = (param) => StyleSheet.create
             text: {
                 color: '#bcd',
                 fontFamily: 'gayathri',
-                fontSize: RFValue(20),
+                fontSize: 20,
                 textAlign: 'center',
                 alignSelf: 'center'
             }

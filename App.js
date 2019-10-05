@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, { Fragment } from 'react';
 import Title from './components/Title';
 import RunData from './data/GetRunData';
@@ -16,16 +8,7 @@ import Arrow from './components/Arrow';
 import userNames from './data/userNames';
 import UserSearch from './components/UserSearch';
 import SplashScreen from 'react-native-splash-screen';
-
-
-import {
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  Alert,
-  ActivityIndicator,
-} from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Alert, ActivityIndicator} from 'react-native';
 
 class App extends React.Component {
   constructor() {
@@ -58,6 +41,17 @@ class App extends React.Component {
     this.setState({ data: Games, dataLoaded: true });
   }
 
+  updateTabs(scroll) {
+    setTimeout(() => { this.setState({ tabLength: this.state.data.length + this.state.userData.length, userLoading: false }) }, 10);
+    if (scroll) setTimeout(() => { this.horizontal.current.scrollToEnd({ options: { animated: true, duration: 600 } }); }, 40);
+  }
+
+  closeUserTab = index => () => {
+    this.setState(prevState => { userData: prevState.userData.splice(index, 1) });
+    const scroll = index + 1 === this.state.userData.length;
+    this.updateTabs(scroll, index);
+  }
+
   getUserData = data => async () => {
 
     for (_data of this.state.userData) {
@@ -77,18 +71,15 @@ class App extends React.Component {
 
     else {
 
-      if (this.state.userData.length < 3) {
+      if (this.state.userData.length < 10) {
         this.setState(prevState => { userData: prevState.userData.push(response) });
       }
       else {
         let tempState = [...this.state.userData];
-        tempState[2] = response;
+        tempState[9] = response;
         this.setState(prevState => { userData: prevState.userData = tempState });
       }
-
-      this.setState({ tabLength: this.state.data.length + this.state.userData.length, userLoading: false })
-      setTimeout(() => { this.horizontal.current.scrollToEnd({ options: { animated: true, duration: 600 } }); }, 10)
-
+      this.updateTabs(true);
 
     }
   }
@@ -122,28 +113,28 @@ class App extends React.Component {
   render() {
 
     const gameTitles = this.state.data.map((dat, index) => { return <Text key={index} style={styles(this.state.tabLength).titleText}>{dat.name}</Text> })
-    const games = this.state.data.map((dat, index) => { return <DataTab user={false} key={index} style={[styles(this.state.tabLength).games, {zIndex:200}]} index={index} data={dat} /> });
+    const games = this.state.data.map((dat, index) => { return <DataTab user={false} key={index} style={[styles(this.state.tabLength).games, { zIndex: 200 }]} index={index} data={dat} /> });
 
     if (this.state.userData.length > 0) {
       for (let [index, value] of this.state.userData.entries()) {
-        gameTitles.push(<View key={index + this.state.data.length} style={[styles(this.state.tabLength).titleText, {height:44}]}><Text style={[styles(this.state.tabLength).userTitleText, {fontSize: value.runner.length < 12 ? 30 : 42 - value.runner.length}]}>{value.runner}</Text></View>)
-        games.push(<DataTab user={true} key={index + this.state.data.length} style={styles(this.state.tabLength).games} index={index} data={value} />)
+        gameTitles.push(<View key={index + this.state.data.length} style={[styles(this.state.tabLength).titleText, { height: 44 }]}><Text style={[styles(this.state.tabLength).userTitleText, { fontSize: value.runner.length < 12 ? 30 : 42 - value.runner.length }]}>{value.runner}</Text></View>)
+        games.push(<DataTab closeTab={this.closeUserTab} user={true} key={index + this.state.data.length} style={styles(this.state.tabLength).games} index={index} data={value} />)
       }
     }
 
     return (
 
-      <View style={{ flex: 1, backgroundColor: '#222222', justifyContent: 'flex-start', alignItems: 'flex-start', height:'100%', width:'100%' }}>
+      <View style={{ flex: 1, backgroundColor: '#222222', justifyContent: 'flex-start', alignItems: 'flex-start', height: '100%', width: '100%' }}>
         <Title userLoading={this.state.userLoading} style={{ zIndex: 100 }} func={this.searchUser} />
-        {this.state.dataLoaded && <Arrow ref={this.scrollRef} length={this.state.tabLength} />}
+        <Arrow ref={this.scrollRef} length={this.state.tabLength} />
         {this.state.userLoading && <View style={styles().loadingCircle}><ActivityIndicator size={80} color="#dd4411" /></View>}
         <ScrollView ref={this.horizontal} onScroll={this.handleScroll} contentContainerStyle={styles(this.state.tabLength).horizontalScroll} horizontal={true} pagingEnabled={true}
-          showsHorizontalScrollIndicator={false} directionalLockEnabled={true} disableIntervalMomentum={true} bounces={false}>
+          showsHorizontalScrollIndicator={false} decelerationRate='fast'>
           <View style={styles().inner}>
-            <View style={[styles().outer, {zIndex: 0}]}>
+            <View style={[styles().outer, { zIndex: 0 }]}>
               {gameTitles}
             </View>
-            <View style={[styles().outer, { marginLeft: 2, zIndex:10, height:'90%' }]}>
+            <View style={[styles().outer, { marginLeft: 2, zIndex: 10, height: '90%' }]}>
               {games}
             </View>
 
@@ -162,9 +153,9 @@ const styles = (ori) => StyleSheet.create({
     width: '100%',
     height: '100%',
     flexDirection: 'column',
-    alignItems:'flex-start',
-    justifyContent:'flex-start',
-    zIndex:0
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    zIndex: 0
   },
   outer: {
     width: '100%',
@@ -174,11 +165,11 @@ const styles = (ori) => StyleSheet.create({
   },
   horizontalScroll: {
     justifyContent: 'flex-start',
-    alignItems:'flex-start',
+    alignItems: 'flex-start',
     flexDirection: 'row',
     width: `${100 * ori}%`,
-    height:'100%',
-    zIndex:5
+    height: '100%',
+    zIndex: 5
   },
 
   titleText: {
@@ -197,9 +188,9 @@ const styles = (ori) => StyleSheet.create({
     textAlignVertical: 'center',
   },
 
-  userTitleText:{
+  userTitleText: {
     color: '#fff',
-    marginLeft:'31%',
+    marginLeft: '31%',
     fontFamily: 'squada',
     alignSelf: 'flex-start',
     textAlign: 'left',

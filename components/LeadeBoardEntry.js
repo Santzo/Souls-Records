@@ -1,4 +1,4 @@
-import React, { useState, setState } from 'react';
+import React  from 'react';
 import { Text, View, StyleSheet, Image, TouchableOpacity, Linking, Alert } from 'react-native';
 const Time = require('../data/TimeCalculator');
 
@@ -14,9 +14,9 @@ class LeaderBoardEntry extends React.Component {
         if (!this.props.user) {
             return nextProps.amountToShow != this.props.amountToShow;
         }
-        else{
+        else {
             return nextProps.runner != this.props.runner;
-        } 
+        }
     }
 
 
@@ -60,9 +60,8 @@ class LeaderBoardEntry extends React.Component {
     }
 
     ListUpdate = (link) => () => {
-        console.log(link);
-        // if (link !== '') Linking.openURL(link);
-        // else Alert.alert('No video', 'No video found for this entry :(');    
+        if (link !== '') Linking.openURL(link);
+        else Alert.alert('No video', 'No video found for this entry :(');
     }
 
 
@@ -129,7 +128,7 @@ styles = StyleSheet.create({
     userText:
     {
         width: '47%',
-        backgroundColor: '#422',
+        backgroundColor: '#333',
         marginRight: 6,
         fontWeight: 'bold',
         borderRadius: 5,

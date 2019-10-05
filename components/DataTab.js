@@ -1,12 +1,13 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState} from 'react'
 import Games from '../data/Games';
-import { ActivityIndicator, StyleSheet, Text, View, ScrollView, Image } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native'
 import LeaderBoardEntry from './LeadeBoardEntry';
 import ExpandButton from './ExpandButton';
 import Global from '../global'
 
 
 
+let runsLength = [];
 function DataTab(props) {
     const [aruns, setaRuns] = useState([]);
     const [eText, seteText] = useState([]);
@@ -54,6 +55,7 @@ function DataTab(props) {
             )
         }) : [];
 
+        runsLength[props.index] = typeof runs !== 'undefined' ? runs.length : 0;
         return (
 
             <View style={styles(props).mainContainer}>
@@ -65,6 +67,7 @@ function DataTab(props) {
                 </ScrollView>
             </View>
         )
+
     }
 
     // Datatab for users
@@ -73,7 +76,6 @@ function DataTab(props) {
             const runsOfTheGame = [];
             for (runnerGame of props.data.games) {
                 if (game.name === runnerGame.name) {
-                    console.log (runnerGame.time + " " + runnerGame.date)
                     runsOfTheGame.push(<LeaderBoardEntry runner={props.data.runner} key={runnerGame.name + runnerGame.category} user={props.user} index={index} data={runnerGame} />)
                 }
             }
@@ -81,18 +83,20 @@ function DataTab(props) {
                 runsOfTheGame.length > 0 ?
                     <View key={index} style={styles(props).scrollContainer}>
                         <View style={styles(props).categoryContainer}>
-                            <Text style={[styles(game.name).categoryText, {paddingBottom:1.75}]}>{game.name}</Text>
+                            <Text style={[styles(game.name).categoryText, { paddingBottom: 1.75 }]}>{game.name}</Text>
                         </View>
                         {runsOfTheGame}
                     </View>
                     : []
             );
+
         }
         );
         return (
             <View style={styles(props).mainContainer}>
                 {props.user && props.data.country !== 'undefined' && props.data.country !== null && <Image resizeMode='stretch' style={styles(Global).flag} source={{ uri: `https://www.countryflags.io/${props.data.country}/flat/64.png` }} />}
-                <ScrollView keyboardShouldPersistTaps='always'  directionalLockEnabled={true} showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles(props).scrollContainer}>
+                <TouchableOpacity onPress={props.closeTab(props.index)} style={styles(props).closeTab}><Text style={styles(props).text}>Close this tab</Text></TouchableOpacity>
+                <ScrollView keyboardShouldPersistTaps='always' decelerationRate='fast' showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles(props).scrollContainer}>
                     {runs}
                 </ScrollView>
             </View>
@@ -103,14 +107,13 @@ function DataTab(props) {
 
 
 function arePropsEqual(prevProps, nextProps) {
-    if (!prevProps.user)
-    {
-        return prevProps === nextProps;
+    if (!prevProps.user) {
+        return runsLength[nextProps.index] === nextProps.data.categories.length;
     }
 
     if (prevProps.user && nextProps.user)
-        return true;
-  }
+        return prevProps.data === nextProps.data;
+}
 
 
 const styles = (param) => StyleSheet.create
@@ -150,7 +153,14 @@ const styles = (param) => StyleSheet.create
             padding: 5
         },
 
-
+        text: {
+            color: '#fff',
+            fontFamily: 'gayathri',
+            fontSize: 16,
+            fontWeight: 'bold',
+            textAlignVertical: 'center',
+            textAlign: 'center'
+        },
 
         categoryText: {
             color: '#fff',
@@ -161,7 +171,18 @@ const styles = (param) => StyleSheet.create
             textAlignVertical: 'center',
             textAlign: 'left',
         },
-
+        closeTab:
+        {
+            backgroundColor: '#710',
+            width: '75%',
+            alignSelf: 'center',
+            borderColor: '#bab',
+            borderWidth: 1.75,
+            padding: 3,
+            marginTop: 7,
+            marginBottom: 7,
+            borderRadius: 10,
+        },
 
 
         horizontalLine: {

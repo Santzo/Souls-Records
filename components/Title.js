@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Image, Keyboard, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Keyboard, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Global from '../global';
-
 import Fontisto from 'react-native-vector-icons/Fontisto'
-import { RFValue } from 'react-native-responsive-fontsize';
+
 
 
 const textInput = React.createRef();

@@ -1,7 +1,5 @@
 import Games from './Games';
 
-
-
 async function GetRunnerData(name) {
     let UserData = {}
     UserData.games = [];
@@ -14,7 +12,7 @@ async function GetRunnerData(name) {
     let tempLocation = data.data[0].players.data[0].location;
     let tempCountry = Check(tempLocation) ? data.data[0].players.data[0].location.country.code : null;
     UserData.country = Check(tempCountry) ? tempCountry : '';
-    
+
     const games = data.data.filter(dat => {
         let _data = false;
         Games.forEach(game => {
@@ -25,15 +23,15 @@ async function GetRunnerData(name) {
         return _data;
     });
 
-   
+
     for (let i = 0; i < games.length; i++) {
         const tempName = games[i].game.data.names.international;
         const tempCategory = games[i].category.data.name;
         const tempPlace = games[i].place;
-        const tempTime = games[i].run.times.primary_t; 
+        const tempTime = games[i].run.times.primary_t;
         const tempDate = games[i].run.date;
-       
-        
+
+
         const tempVideoCat = games[i].run.videos;
         const tempVideo = Check(tempVideoCat) ? games[i].run.videos.links[0].uri : null;
 
@@ -44,10 +42,10 @@ async function GetRunnerData(name) {
         const time = Check(tempTime) ? tempTime : 0;
         const video = Check(tempVideo) ? tempVideo : '';
 
-        
+
         // Check for duplicate Bloodborne categories, because no quitout meme runs still exist in the leaderboard
-        if (!UserData.games.some(user => user.name === name && user.category === category)) UserData.games.push({name, category, date, place, time, video});
-        else{
+        if (!UserData.games.some(user => user.name === name && user.category === category)) UserData.games.push({ name, category, date, place, time, video });
+        else {
             const index = UserData.games.findIndex(game => game.name === name && game.category === category)
             UserData.games[index].place = UserData.games[index].place > place ? UserData.games[index].place : place;
         }
@@ -55,7 +53,7 @@ async function GetRunnerData(name) {
     return UserData;
 }
 
-function Check(e){
+function Check(e) {
     return typeof e !== 'undefined' && e !== null
 }
 

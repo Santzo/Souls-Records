@@ -2,7 +2,7 @@ import userNames from './userNames'
 import Games from './Games';
 
 async function RunData(mainApp) {
-    
+
     const done = await Games.map(async game =>
         GetRunData(game).then(() => mainApp.updateGames())
     );
@@ -37,10 +37,10 @@ async function GetRunData(game) {
 
             const date = catData.data.runs[i].run.date;
 
-            
+
             const videoType = typeof catData.data.runs[i].run.videos !== 'undefined' && catData.data.runs[i].run.videos !== null ? catData.data.runs[i].run.videos.links : null;
             const videoLink = typeof videoType !== 'undefined' && videoType !== null ? catData.data.runs[i].run.videos.links[0].uri : "";
- 
+
             cat.leaderboard[i] = ({ runner, runnerId, time, country, date, videoLink });
 
             if (!userNames.includes(runner))
@@ -49,6 +49,7 @@ async function GetRunData(game) {
     })
 
     await Promise.all(leaderboardData);
+
     game.isLoaded = true;
 }
 
@@ -56,7 +57,7 @@ async function GetRunData(game) {
 async function GetCategories(game) {
 
     const response = await fetch(`https://www.speedrun.com/api/v1/games/${game.id}/categories`).catch(err => console.log(err));
-    const data = await response.json();
+    const data = await response.json().catch(err => console.log(err));
     return data;
 
 
@@ -65,7 +66,7 @@ async function GetCategories(game) {
 async function GetLeaderboards(game, category) {
 
     const response = await fetch(`https://www.speedrun.com/api/v1/leaderboards/${game.id}/category/${category.id}?embed=players`).catch(err => console.log(err));
-    const data = await response.json();
+    const data = await response.json().catch(err => console.log(err));
 
 
     return data;
