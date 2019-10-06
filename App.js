@@ -8,7 +8,8 @@ import Arrow from './components/Arrow';
 import userNames from './data/userNames';
 import UserSearch from './components/UserSearch';
 import SplashScreen from 'react-native-splash-screen';
-import { StyleSheet, View, Text, ScrollView, Alert, ActivityIndicator} from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Alert, ActivityIndicator } from 'react-native';
+
 
 class App extends React.Component {
   constructor() {
@@ -110,6 +111,12 @@ class App extends React.Component {
 
   }
 
+  horizonalToggle = enabled => () => {
+    console.log(enabled);
+    const { current: list } = this.horizontal;
+    list.setNativeProps({ scrollEnabled: enabled });
+  }
+
   render() {
 
     const gameTitles = this.state.data.map((dat, index) => { return <Text key={index} style={styles(this.state.tabLength).titleText}>{dat.name}</Text> })
@@ -128,7 +135,7 @@ class App extends React.Component {
         <Title userLoading={this.state.userLoading} style={{ zIndex: 100 }} func={this.searchUser} />
         <Arrow ref={this.scrollRef} length={this.state.tabLength} />
         {this.state.userLoading && <View style={styles().loadingCircle}><ActivityIndicator size={80} color="#dd4411" /></View>}
-        <ScrollView ref={this.horizontal} onScroll={this.handleScroll} contentContainerStyle={styles(this.state.tabLength).horizontalScroll} horizontal={true} pagingEnabled={true}
+        <ScrollView nestedScrollEnabled={true} ref={this.horizontal} onMomentumScrollBegin={this.horizonalToggle(false)} onMomentumScrollEnd={this.horizonalToggle(true)} onScroll={this.handleScroll} contentContainerStyle={styles(this.state.tabLength).horizontalScroll} horizontal={true} pagingEnabled={true}
           showsHorizontalScrollIndicator={false} decelerationRate='fast'>
           <View style={styles().inner}>
             <View style={[styles().outer, { zIndex: 0 }]}>
