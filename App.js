@@ -111,7 +111,7 @@ class App extends React.Component {
 
   }
 
-  horizonalToggle = enabled => () => {
+  horizontalToggle = enabled => () => {
     console.log(enabled);
     const { current: list } = this.horizontal;
     list.setNativeProps({ scrollEnabled: enabled });
@@ -120,12 +120,12 @@ class App extends React.Component {
   render() {
 
     const gameTitles = this.state.data.map((dat, index) => { return <Text key={index} style={styles(this.state.tabLength).titleText}>{dat.name}</Text> })
-    const games = this.state.data.map((dat, index) => { return <DataTab user={false} key={index} style={[styles(this.state.tabLength).games, { zIndex: 200 }]} index={index} data={dat} /> });
+    const games = this.state.data.map((dat, index) => { return <DataTab hori={this.horizontalToggle} user={false} key={index} style={[styles(this.state.tabLength).games, { zIndex: 200 }]} index={index} data={dat} /> });
 
     if (this.state.userData.length > 0) {
       for (let [index, value] of this.state.userData.entries()) {
         gameTitles.push(<View key={index + this.state.data.length} style={[styles(this.state.tabLength).titleText, { height: 44 }]}><Text style={[styles(this.state.tabLength).userTitleText, { fontSize: value.runner.length < 12 ? 30 : 42 - value.runner.length }]}>{value.runner}</Text></View>)
-        games.push(<DataTab closeTab={this.closeUserTab} user={true} key={index + this.state.data.length} style={styles(this.state.tabLength).games} index={index} data={value} />)
+        games.push(<DataTab hori={this.horizontalToggle} closeTab={this.closeUserTab} user={true} key={index + this.state.data.length} style={styles(this.state.tabLength).games} index={index} data={value} />)
       }
     }
 
@@ -135,7 +135,7 @@ class App extends React.Component {
         <Title userLoading={this.state.userLoading} style={{ zIndex: 100 }} func={this.searchUser} />
         <Arrow ref={this.scrollRef} length={this.state.tabLength} />
         {this.state.userLoading && <View style={styles().loadingCircle}><ActivityIndicator size={80} color="#dd4411" /></View>}
-        <ScrollView nestedScrollEnabled={true} ref={this.horizontal} onMomentumScrollBegin={this.horizonalToggle(false)} onMomentumScrollEnd={this.horizonalToggle(true)} onScroll={this.handleScroll} contentContainerStyle={styles(this.state.tabLength).horizontalScroll} horizontal={true} pagingEnabled={true}
+        <ScrollView ref={this.horizontal} onScrollEndDrag={this.horizontalToggle(false)} onScrollBeginDrag={this.horizontalToggle(true)} onScroll={this.handleScroll} contentContainerStyle={styles(this.state.tabLength).horizontalScroll} horizontal={true} pagingEnabled={true}
           showsHorizontalScrollIndicator={false} decelerationRate='fast'>
           <View style={styles().inner}>
             <View style={[styles().outer, { zIndex: 0 }]}>

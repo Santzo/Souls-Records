@@ -97,7 +97,7 @@ function DataTab(props) {
             <View style={styles(props).mainContainer}>
                 {props.user && props.data.country !== 'undefined' && props.data.country !== null && <Image resizeMode='stretch' style={styles(Global).flag} source={{ uri: `https://www.countryflags.io/${props.data.country}/flat/64.png` }} />}
                 <TouchableOpacity onPress={props.closeTab(props.index)} style={styles(props).closeTab}><Text style={styles(props).text}>Close this tab</Text></TouchableOpacity>
-                <ScrollView directionalLockEnabled={true} keyboardShouldPersistTaps='always' decelerationRate='fast' showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles(props).scrollContainer}>
+                <ScrollView onScrollBeginDrag={props.hori(false)} onScrollEndDrag={props.hori(true)} directionalLockEnabled={true} keyboardShouldPersistTaps='always' decelerationRate='fast' showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles(props).scrollContainer}>
                     {runs}
                 </ScrollView>
             </View>
