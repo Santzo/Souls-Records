@@ -46,8 +46,11 @@ async function GetRunnerData(name) {
         // Check for duplicate Bloodborne categories, because no quitout meme runs still exist in the leaderboard
         if (!UserData.games.some(user => user.name === name && user.category === category)) UserData.games.push({ name, category, date, place, time, video });
         else {
-            const index = UserData.games.findIndex(game => game.name === name && game.category === category)
-            UserData.games[index].place = UserData.games[index].place > place ? UserData.games[index].place : place;
+            const index = UserData.games.findIndex(game => game.name === name && game.category === category && game.time === time)
+            if (index !== -1) 
+            {
+                UserData.games[index].place = UserData.games[index].place > place ? UserData.games[index].place : place;
+            }
         }
     }
     return UserData;

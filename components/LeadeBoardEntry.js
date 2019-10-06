@@ -52,7 +52,7 @@ class LeaderBoardEntry extends React.Component {
         }
         leaderBoard = (
             <TouchableOpacity activeOpacity={0.5} onPress={this.ListUpdate(video)} style={styles.container} key={this.props.index}>
-                <Text style={[styles.text, styles.userText]}>{category}</Text>
+                <Text style={[styles.text, styles.userText, {fontSize: category.length < 23 ? 16 : 12}]}>{category}</Text>
                 <Text style={[styles.text, styles.positionText]}>{place}.</Text>
                 <Text style={[styles.text, styles.timeText]}>{Time.Time(time)}</Text>
                 <Text style={[styles.text, bold && { fontWeight: 'bold' }]}>{howLong}</Text>
