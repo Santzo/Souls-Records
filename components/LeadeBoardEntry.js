@@ -60,8 +60,8 @@ class LeaderBoardEntry extends React.Component {
     }
 
     ListUpdate = (link) => () => {
-        if (link !== '') Linking.openURL(link);
-        else Alert.alert('No video', 'No video found for this entry :(');
+        // if (link !== '') Linking.openURL(link);
+        // else Alert.alert('No video', 'No video found for this entry :(');
     }
 
 

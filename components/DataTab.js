@@ -1,6 +1,6 @@
 import React, { useState} from 'react'
 import Games from '../data/Games';
-import { ActivityIndicator, StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, View, ScrollView, Image, TouchableOpacity} from 'react-native'
 import LeaderBoardEntry from './LeadeBoardEntry';
 import ExpandButton from './ExpandButton';
 import Global from '../global'
@@ -63,7 +63,7 @@ function DataTab(props) {
 
                 {loading && <View style={styles(props).loadingCircle}><ActivityIndicator size={60} color="#9f8" /></View>}
                 {!props.data.isLoaded && <View style={styles(props).mainCircle}><ActivityIndicator size={80} color="#abf" /></View>}
-                <ScrollView keyboardShouldPersistTaps='always' showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles(props).scrollContainer}>
+                <ScrollView onScrollBeginDrag={props.hori(false)} onScrollEndDrag={props.hori(true)} keyboardShouldPersistTaps='always' showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles(props).scrollContainer}>
                     {runs}
                 </ScrollView>
             </View>
@@ -97,7 +97,7 @@ function DataTab(props) {
             <View style={styles(props).mainContainer}>
                 {props.user && props.data.country !== 'undefined' && props.data.country !== null && <Image resizeMode='stretch' style={styles(Global).flag} source={{ uri: `https://www.countryflags.io/${props.data.country}/flat/64.png` }} />}
                 <TouchableOpacity onPress={props.closeTab(props.index)} style={styles(props).closeTab}><Text style={styles(props).text}>Close this tab</Text></TouchableOpacity>
-                <ScrollView onScrollBeginDrag={props.hori(false)} onScrollEndDrag={props.hori(true)} directionalLockEnabled={true} keyboardShouldPersistTaps='always' decelerationRate='fast' showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles(props).scrollContainer}>
+                <ScrollView onScrollBeginDrag={props.hori(false)} onScrollEndDrag={props.hori(true)} keyboardShouldPersistTaps='always' decelerationRate='fast' showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false} contentContainerStyle={styles(props).scrollContainer}>
                     {runs}
                 </ScrollView>
             </View>
