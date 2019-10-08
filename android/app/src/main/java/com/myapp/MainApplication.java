@@ -1,4 +1,4 @@
-package com.myapp;
+package com.santerihakoniemi.soulsrecords;
 
 import android.app.Application;
 import android.util.Log;

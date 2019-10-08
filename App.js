@@ -29,6 +29,7 @@ class App extends React.Component {
     this.scrollRef = React.createRef();
     this.horizontal = React.createRef();
     this.handleScroll = this.handleScroll.bind(this);
+    this.momentum;
 
   }
 
@@ -113,10 +114,15 @@ class App extends React.Component {
   }
 
   horizontalToggle = (enabled, delay) => () => {
-    console.log (enabled, delay);
+   
+    if (this.momentum && !enabled)
+    {
+      clearTimeout(this.momentum);
+    }
+
     const { current: list } = this.horizontal;
     if (delay) {
-      setTimeout(() => list.setNativeProps({ scrollEnabled: enabled }), delay)
+      this.momentum = setTimeout(() => list.setNativeProps({ scrollEnabled: enabled }), delay)
     }
     else {
       list.setNativeProps({ scrollEnabled: enabled });
@@ -142,8 +148,8 @@ class App extends React.Component {
         <Title userLoading={this.state.userLoading} style={{ zIndex: 100 }} func={this.searchUser} />
         <Arrow ref={this.scrollRef} length={this.state.tabLength} />
         {this.state.userLoading && <View style={styles().loadingCircle}><ActivityIndicator size={80} color="#dd4411" /></View>}
-        <ScrollView onMomentumScrollBegin={this.horizontalToggle(false)} onMomentumScrollEnd={this.horizontalToggle(true, 250)} directionalLockEnabled={true} ref={this.horizontal} onScroll={this.handleScroll} contentContainerStyle={styles(this.state.tabLength).horizontalScroll} horizontal={true} pagingEnabled={true}
-          showsHorizontalScrollIndicator={false} decelerationRate='fast'>
+        <ScrollView onMomentumScrollBegin={this.horizontalToggle(false)} onMomentumScrollEnd={this.horizontalToggle(true, 200)} directionalLockEnabled={true} ref={this.horizontal} onScroll={this.handleScroll} contentContainerStyle={styles(this.state.tabLength).horizontalScroll} horizontal={true} pagingEnabled={true}
+          showsHorizontalScrollIndicator={false} disableIntervalMomentum={true} decelerationRate={100}>
           <View style={styles().inner}>
             <View style={[styles().outer, { zIndex: 0 }]}>
               {gameTitles}
