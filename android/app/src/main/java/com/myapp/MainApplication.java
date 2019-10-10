@@ -1,4 +1,4 @@
-package com.santerihakoniemi.soulsrecords;
+package com.SanteriHakoniemi.SpeedSoulsRecords;
 
 import android.app.Application;
 import android.util.Log;

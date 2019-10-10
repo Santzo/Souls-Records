@@ -1,4 +1,4 @@
-package com.santerihakoniemi.soulsrecords;
+package com.SanteriHakoniemi.SpeedSoulsRecords;
 
 import android.os.Bundle; // here
 import com.facebook.react.ReactActivity;
